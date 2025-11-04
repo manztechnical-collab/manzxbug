@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SHADOW-X APPS — Login & Tools (Simulasi Aman)</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#021d06; /* hijau gelap */
+      --card:#062b10;
+      --muted:#7fd894;
+      --text:#d5ffd5;
+      --primary:#00ff88;
+      --secondary:#00c46f;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;}
+    body{
+      font-family:Poppins, sans-serif;
+      background:var(--bg);
+      display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;
+    }
+    .matrix{position:fixed;inset:0;z-index:0;}
+    canvas{width:100%;height:100%;display:block;}
+
+    .container{position:relative;z-index:10;width:100%;max-width:980px;display:flex;gap:18px;align-items:flex-start;justify-content:center;}
+
+    .card{
+      width:100%;max-width:360px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(0,255,128,.2);
+      backdrop-filter:blur(10px);
+      padding:22px;border-radius:16px;text-align:center;
+      box-shadow:0 6px 30px rgba(0,255,128,.2);
+    }
+    .logo{width:72px;height:72px;border-radius:50%;object-fit:cover;margin:0 auto 12px;}
+    .title{font-family:Orbitron;color:var(--primary);font-size:22px;font-weight:800;margin-bottom:6px;text-shadow:0 0 10px var(--primary);}
+    .subtitle{color:var(--muted);font-size:12px;margin-bottom:16px;}
+
+    input{
+      width:100%;padding:12px 12px 12px 36px;border-radius:10px;
+      border:1px solid rgba(0,255,128,.3);
+      background:rgba(7,20,10,.65);color:var(--text);outline:none;font-size:14px;
+    }
+    input:focus{box-shadow:0 0 8px rgba(0,255,128,.4);border-color:var(--secondary);}
+    .form-group{position:relative;margin-bottom:12px;}
+    .form-group i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--secondary);}
+    button{width:100%;padding:12px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(90deg,var(--primary),var(--secondary));color:#001c0b;font-weight:700;text-shadow:0 0 4px #d5ffd5;}
+    .btn{display:inline-block;padding:10px 14px;margin:6px 6px 6px 0;border-radius:8px;border:none;cursor:pointer;background:linear-gradient(90deg,var(--primary),var(--secondary));color:#001c0b;font-weight:700;}
+    .footer{margin-top:14px;font-size:11px;color:var(--muted);}
+    .tools{display:none;width:540px;max-width:92%;background:rgba(0,40,0,.35);border:1px solid rgba(0,255,128,.2);padding:18px;border-radius:12px;color:var(--text);}
+    .tools h2{font-family:Orbitron;color:var(--primary);margin-bottom:10px;text-shadow:0 0 6px var(--primary);}
+    #banner{width:100%;max-height:160px;object-fit:cover;margin:10px 0;border-radius:8px;display:none;}
+    .caption-box{min-height:86px;background:rgba(0,0,0,.35);border-radius:8px;padding:10px;color:var(--text);white-space:pre-wrap;margin-top:10px;display:none;}
+    .status{margin-top:10px;font-weight:600;color:#00ff88;}
+    .info{font-size:13px;color:var(--muted);margin-top:6px;}
+    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:28px;z-index:50;background:rgba(0,0,0,.7);color:#fff;padding:10px 14px;border-radius:8px;font-weight:600;display:none;}
+  </style>
+</head>
+<body>
+  <div class="matrix"><canvas id="matrixCanvas"></canvas></div>
+  <div class="container">
+    <!-- LOGIN -->
+    <div id="login-card" class="card">
+      <img class="logo" src="https://files.catbox.moe/7f2c4x.jpg" alt="logo">
+      <div class="title">Shadow - Trashed</div>
+      <div class="subtitle">Gateway Shadow Trashed and Fire</div>
+      <div class="form-group">
+        <i class="fas fa-user"></i><input id="username" type="text" placeholder="Username">
+      </div>
+      <div class="form-group">
+        <i class="fas fa-key"></i><input id="password" type="password" placeholder="Password">
+      </div>
+      <button id="btnLogin"><i class="fa-solid fa-right-to-bracket"></i> LOGIN</button>
+      <div class="footer">© 2025 Manzx</div>
+    </div>
+
+    <!-- TOOLS -->
+    <div id="tools-page" class="tools">
+      <h2>WEB BUG VVIP MANZX</h2>
+      <input type="text" id="targetNumber" placeholder="Masukkan nomor target (62xxxx)">
+      <div>
+        <button class="btn" id="btnForce">Force Close</button>
+        <button class="btn" id="btnBlank">Blank Ui</button>
+        <button class="btn" id="btnFcIn">Fc Invisible</button>
+        <button class="btn" id="btnDelay">Delay Invisible</button>
+        <button class="btn" id="btnCrip">Crash Iphone</button>
+      </div>
+      <button class="btn" id="btnMusic"><i class="fa-solid fa-music"></i> Play Musik</button>
+      <img id="banner" src="https://files.catbox.moe/mt7bie.jpg" alt="banner">
+      <div class="caption-box" id="caption"></div>
+      <div class="status">Status: Server Aktif🟢</div>
+      <div class="info">Selamat datang, Member Manzx!</div>
+      <audio id="bgMusic" src="https://files.catbox.moe/lfnh0f" preload="none"></audio>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+<script>
+const STORED={usernameHash:"7931341e9316f14d4dfdf71c962e2d2af0809677ed5e35449cde0b56d4789dee",passwordHash:"5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5"};
+function buf2hex(buffer){return[...new Uint8Array(buffer)].map(b=>b.toString(16).padStart(2,"0")).join("");}
+async function sha256Hex(text){const data=new TextEncoder().encode(text);return buf2hex(await crypto.subtle.digest("SHA-256",data));}
+function showToast(msg,time=2200){const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",time);}
+document.getElementById("btnLogin").addEventListener("click",async()=>{const u=document.getElementById("username").value.trim();const p=document.getElementById("password").value;if(!u||!p){showToast("Isi username dan password");return;}
+const uh=await sha256Hex(u);const ph=await sha256Hex(p);
+if(uh===STORED.usernameHash&&ph===STORED.passwordHash){document.getElementById("login-card").style.display="none";document.getElementById("tools-page").style.display="block";showToast("Login berhasil — buka tools (simulasi)");}
+else showToast("Username / Password salah");});
+
+function validNumber(q){return q&&q.startsWith("62")&&q.length>=10;}
+function simulateAction(name,done){const q=document.getElementById("targetNumber").value.trim();const caption=document.getElementById("caption");const banner=document.getElementById("banner");
+if(!validNumber(q)){alert("Masukkan nomor valid!");return;}
+banner.style.display="block";caption.style.display="block";let progress=0;
+const timer=setInterval(()=>{progress+=Math.floor(Math.random()*18)+6;
+if(progress>=100){progress=100;clearInterval(timer);caption.textContent=`•━━━━━━━━━━━━━━━━━━━━•\nTarget: ${q}\n${done}\n•━━━━━━━━━━━━━━━━━━━━•`;showToast(done);}
+else caption.textContent=`${name} ${progress}%...`;},500);}
+document.getElementById("btnForce").onclick=()=>simulateAction("Force Close","Sukses: simulasi Force Close");
+document.getElementById("btnBlank").onclick=()=>simulateAction("Blank UI","Sukses: simulasi Blank UI");
+document.getElementById("btnFcIn").onclick=()=>simulateAction("Fc Invisible","Sukses: simulasi Fc Invisible");
+document.getElementById("btnDelay").onclick=()=>simulateAction("Delay Invisible","Sukses: simulasi Delay Invisible");
+document.getElementById("btnCrip").onclick=()=>simulateAction("Crash Iphone","Sukses: simulasi Crash (aman)");
+
+const music=document.getElementById("bgMusic");let playing=false;
+document.getElementById("btnMusic").addEventListener("click",()=>{if(!playing){music.play();showToast("Musik diputar");document.getElementById("btnMusic").innerHTML='<i class="fa-solid fa-pause"></i> Pause Musik';playing=true;}
+else{music.pause();showToast("Musik dijeda");document.getElementById("btnMusic").innerHTML='<i class="fa-solid fa-music"></i> Play Musik';playing=false;}});
+
+/* MATRIX HIJAU */
+(function matrix(){
+  const c=document.getElementById("matrixCanvas"),ctx=c.getContext("2d");
+  let w,h,cols,drops;function resize(){w=c.width=innerWidth;h=c.height=innerHeight;cols=Math.floor(w/14);drops=Array(cols).fill(1);}
+  const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
+  function draw(){ctx.fillStyle="rgba(2,29,6,0.2)";ctx.fillRect(0,0,w,h);ctx.font="14px monospace";
+    for(let i=0;i<drops.length;i++){const text=chars.charAt(Math.random()*chars.length|0);const x=i*14,y=drops[i]*14;
+      ctx.fillStyle="rgba(0,255,128,0.8)";ctx.fillText(text,x,y);
+      if(y>h&&Math.random()>0.975)drops[i]=0;drops[i]++;}requestAnimationFrame(draw);}
+  window.addEventListener("resize",resize);resize();draw();
+})();
+</script>
+</body>
+</html>
